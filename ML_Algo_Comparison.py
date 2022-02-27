@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 
 dataset = pd.read_csv('Dataset/Sample.csv')
-X = dataset.iloc[:, 1:22].values
-y = dataset.iloc[:, :-14].values
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, :21].values
 
 print('Displaying DataSets for X \n', X)
 print('\n Displaying DataSets for y \n', y)
@@ -26,7 +26,7 @@ print('\n Displaying DataSets for y \n', y)
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 labelEncoder_X = LabelEncoder()
-X[:, 0] = labelEncoder_X.fit_transform(X[:, 0])
+X[:, 22] = labelEncoder_X.fit_transform(X[:, 22])
 print('\n Displaying DataSets in X after Encoding the first column \n', X)
 
 # Thus, we should also use OneHotEncoding by adding dummy columns as per number of distinct values in column country
