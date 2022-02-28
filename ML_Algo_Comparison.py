@@ -1,7 +1,18 @@
 import numpy as np
 import pandas as pd
 
-dataset = pd.read_csv('Dataset/Sample.csv')
+# azureml-core of version 1.0.72 or higher is required
+# azureml-dataprep[pandas] of version 1.1.34 or higher is required
+# from azureml.core import Workspace, Dataset
+
+# subscription_id = '45c99ec8-b3be-481a-8a16-57b22700d8c6'
+# resource_group = 'az204-vm-rg'
+# workspace_name = 'crimeprediction'
+# workspace = Workspace(subscription_id, resource_group, workspace_name)
+# dataset = Dataset.get_by_name(workspace, name='crimedata')
+# dataset.to_pandas_dataframe()
+dataset = pd.read_csv('Dataset/Crimes_2001_to_2022.csv', low_memory=False)
+
 X = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, :21].values
 
