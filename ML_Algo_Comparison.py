@@ -14,7 +14,7 @@ import pandas as pd
 dataset = pd.read_csv('Dataset/Crimes_2001_to_2022.csv', low_memory=False)
 
 X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, :21].values
+y = dataset.iloc[:, 21].values
 
 print('Displaying DataSets for X \n', X)
 print('\n Displaying DataSets for y \n', y)
