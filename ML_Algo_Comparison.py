@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-dataset = pd.read_csv('Crimes_2001_to_2022 _v1.csv', low_memory=False)
+dataset = pd.read_csv('Dataset\Crimes_2001_to_2022 _v1.csv', low_memory=False)
 print('Columns in dataset: ', dataset.columns)
 
 X = dataset.iloc[:, :-1].values
