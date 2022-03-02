@@ -33,6 +33,7 @@ print(' Displaying DataSets for X \n', X)
 
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
+
 # Thus, we should also use OneHotEncoding by adding dummy columns as per number of distinct values in column country
 onehotencoder = OneHotEncoder()
 X = onehotencoder.fit_transform(X).toarray()
