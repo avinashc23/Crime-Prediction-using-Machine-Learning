@@ -5,7 +5,7 @@ dataset = pd.read_csv('Dataset\Crimes_2001_to_2022 _v1.csv', low_memory=False)
 print('Columns in dataset: ', dataset.columns)
 
 X = dataset.iloc[:, :-1].values
-y = dataset.iloc[:, 20].values
+y = dataset.iloc[:, 1].values
 
 print('\n Displaying DataSets for X \n', X)
 print('\n Displaying DataSets for y \n', y)
@@ -22,12 +22,12 @@ print('Displaying dataset,', dataset.head(5))
 from sklearn.impute import SimpleImputer
 
 imputer = SimpleImputer(missing_values=np.nan, strategy='most_frequent')
-imputer = imputer.fit(X[:, 1:22])
+imputer = imputer.fit(X[:, :22])
 
 print(' Splitting the Values In X \n')
 print(' Displaying DataSets for X \n', X)
 
-X[:, 1:22] = imputer.transform(X[:, 1:22])
+X[:, :22] = imputer.transform(X[:, :22])
 print('Filling the value using Most Frequent method: \n')
 print(' Displaying DataSets for X \n', X)
 
