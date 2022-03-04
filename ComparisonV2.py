@@ -34,6 +34,22 @@ imputer = SimpleImputer(missing_values=np.nan, strategy='most_frequent',verbose=
 imputer = imputer.fit(dataset.iloc[: , :])
 print(' Displaying DataSets \n', dataset)
 
+from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression(solver='liblinear', multi_class='ovr')
+lr.fit(X_train, y_train)
+print('Accuracy of Logistic Regression', lr.score(X_test, y_test))
+
+from sklearn.svm import SVC
+svm = SVC(gamma='auto')
+svm.fit(X_train, y_train)
+print('Accuracy of SVM',svm.score(X_test, y_test))
+
+from sklearn.naive_bayes import GaussianNB
+nb = GaussianNB()
+nb.fit(X_train,y_train)
+print('Accuracy of Naive Bayes',nb.score(X_test,y_test))
+
 dataset.iloc[:,:] = imputer.transform(dataset.iloc[: ,:])
 # filled_dataset = dataset
 # dataset.iloc[:,:22]=X[:, :22]
