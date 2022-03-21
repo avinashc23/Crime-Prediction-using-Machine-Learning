@@ -78,19 +78,19 @@ third=temp.iloc[(nextp+1):finalp,:]
 third
 
 # picking random 5k enteries from the first part
-index=np.random.choice(portion,replace=False,size = 5000)
+index=np.random.choice(portion,replace=False,size = 30000)
 df_frst=first.iloc[index]
 df_frst
 
 # picking random 5k enteries from the second half
 
-index=np.random.choice(portion,replace=False,size = 5000)
+index=np.random.choice(portion,replace=False,size = 30000)
 df_scnd=scnd.iloc[index]
 df_scnd
 
 # picking random 5k enteries from the third half
 
-index=np.random.choice(portion,replace=False,size = 5000)
+index=np.random.choice(portion,replace=False,size = 30000)
 df_third=third.iloc[index]
 df_third
 
