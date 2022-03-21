@@ -146,9 +146,66 @@ cp_crime = df.copy()
 cp_crime['crimeType'] = cp_crime['Primary Type'].map(crime_type)
 cp_crime
 
+labelEncoder = LabelEncoder()
+locDes_enc = labelEncoder.fit_transform(cp_crime['Location Description'])
+cp_crime['Location Description'] = locDes_enc
+cp_crime.head()
 
+labelEncoder2 = LabelEncoder()
+arrest_enc = labelEncoder2.fit_transform(cp_crime['Arrest'])
+cp_crime['Arrest'] = arrest_enc
+cp_crime.head()
 
+labelEncoder3 = LabelEncoder()
+domestic_enc = labelEncoder3.fit_transform(cp_crime['Domestic'])
+cp_crime['Domestic'] = domestic_enc
+cp_crime.head()
 
+# feature scaling
+scaler = preprocessing.MinMaxScaler()
+cp_crime[['Beat']] = scaler.fit_transform(cp_crime[['Beat']])
+cp_crime[['X Coordinate', 'Y Coordinate']] = scaler.fit_transform(cp_crime[['X Coordinate', 'Y Coordinate']])
+cp_crime
+
+# using correlation for the feature selection
+corelation = cp_crime.corr()
+corelation
+
+plt.figure(figsize=(10,7))
+sns.heatmap(corelation,annot=True)
+
+# month week day have low correlation they isn't effect our results so we drop them
+# since beat have high correlation with district so we drop beat
+# and X cordinate have high correlation with longitube and Y cordinate with latitude and location so we drop longitude and latitude
+
+selected_cols=['Location Description','Arrest','Domestic','Beat','Ward','Community Area','Year','X Coordinate','Y Coordinate']
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(cp_crime[selected_cols],cp_crime['crimeType'],test_size=0.2, random_state=0)
+
+from sklearn.linear_model import LogisticRegression
+lr = LogisticRegression(solver="saga", multi_class='ovr',max_iter=10000)
+lr.fit(X_train, y_train)
+print('Accuracy of Logistic Regression', lr.score(X_test, y_test))
+
+from sklearn.naive_bayes import GaussianNB
+gnb = GaussianNB()
+gnb.fit(X_train,y_train)
+print('Accuracy of Logistic Regression', gnb.score(X_test, y_test))
+
+from sklearn.naive_bayes import CategoricalNB
+cnb = CategoricalNB()
+cnb.fit(X_train,y_train)
+print('Accuracy of Logistic Regression', cnb.score(X_test, y_test))    
+
+# knn = KNeighborsClassifier(n_neighbors = 10)
+# knn.fit(X_train, y_train)
+# predictions = knn.predict(X_test)
+# print('Accuracy of KNN', knn.score(X_test, y_test))
+# pred_train = knn.predict(X_train)
+# pred_i = knn.predict(X_test)
+# print('Test accuracy ', metrics.accuracy_score(y_train, pred_train))
+# print('Accuracy ', metrics.accuracy_score(y_test, pred_i))
 
 
 
