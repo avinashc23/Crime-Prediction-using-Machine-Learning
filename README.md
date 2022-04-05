@@ -21,4 +21,8 @@
 
 <p align="justify">	In this section, we will explain the workflow of our proposed system. After the collection of the data. The data will be preprocessed, feature extraction technique will be applied to extract the features. To remove the noisy and unlabeled data, data will be encoded by using hot encoding. This will help us to improve the quality of the data. After the preprocessing of the data. Machine learning techniques will be applied such as Knn, Svm, logistic regression, and Naive Bayes. Deep learning techniques will also be applied. After the training and testing of the model, the model which gives the better accuracy will be selected. After getting the result. We will integrate our work with the web. A web interface that will graphically represent the results. RESTful APIs will be used to transfer the data from our system to the web. The web will be designed using HTML, CSS, javascript. The code to integrate our system with the web will be written in python. The graphs on the web will help us in understanding the data. This will help crime analyist to examine the crime </p>
 
+### Conclusion
+<p align="justify"> We have figure out that, KNN and SVM models are only effective on the small data. Naïve Bayes and Logistic Regression have outperformed these two models and achieved the highest accuracy. Logistic regression have achieved the highest accuracy among the other three models when huge data is used. </p>
+![image](https://user-images.githubusercontent.com/78534449/161733259-1f634839-0f90-4bfc-98fd-8c7877d7944b.png)
+
 
