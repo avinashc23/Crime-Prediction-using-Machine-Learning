@@ -9,6 +9,7 @@
 ## Crime-Prediction-using-Machine-Learning
 
 ### Dataset:
+<p align="justify"> For this research work, we have decided to select Chicago city, as the crime rate is very high in this city. In addition, it is a highly populated city, is widely spread, and is famous for its criminal activities. We are using the Chicago crime datasets, which is available on Kaggle. It is a huge dataset of size 2 GB that is updated regularly. This dataset contains the criminal’s record from 2001 to the present year 2022. The dataset consist of more than 1004800 rows and 22 columns. </p>
 #### Link: https://www.kaggle.com/shloksethia/updated-crime-chicago
 
 ### Project Overview
