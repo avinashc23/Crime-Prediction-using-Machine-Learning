@@ -23,6 +23,4 @@
 
 ### Conclusion
 <p align="justify"> We have figure out that, KNN and SVM models are only effective on the small data. Naïve Bayes and Logistic Regression have outperformed these two models and achieved the highest accuracy. Logistic regression have achieved the highest accuracy among the other three models when huge data is used. </p>
-![image](https://user-images.githubusercontent.com/78534449/161733259-1f634839-0f90-4bfc-98fd-8c7877d7944b.png)
-
 
