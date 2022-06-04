@@ -21,12 +21,12 @@ dataset=dataset.drop(columns=['ID','Case Number','Description','Updated On','Blo
 # X.shape
 print('Columns in dataset: ', dataset.columns)
 #Checking the shape of dataset
-dataset.shape
+print('Displaying the shape of dataset',dataset.shape)
 
 # droping the null value enteries drop null 
 dataset.dropna(inplace=True)
 # Displaying DataSet
-dataset
+print('Displaying DataSet after removing null values',dataset)
 
 # Before removing Null values 1048575
 # After removing Null value 1015247
@@ -39,12 +39,12 @@ dataset=dataset[(dataset["Latitude"] < 45)
              & (dataset["Longitude"] > -90)]
 
 # Displaying DataSet
-dataset
+print('Displaying DataSet',dataset)
 
 # listing the crimes category wise with their counts
 types=dataset['Primary Type'].value_counts().sort_values(ascending=False)
 # Displaying types
-types
+print('Displaying types',types)
 
 # crime types according to their counts in dataframe
 # 15 classes
@@ -61,7 +61,7 @@ major_crimes=['THEFT','BATTERY','CRIMINAL DAMAGE','ASSAULT']
 
 # Displaying major_crimes
 crime_df = dataset.loc[dataset['Primary Type'] .isin(major_crimes)]
-crime_df
+print('Displaying major_crimes',crime_df)
 
 # since we dont have different crimes in early years so we drop data of these years
 data = crime_df.pivot_table(index='Year', columns='Primary Type', aggfunc='count')
@@ -70,7 +70,7 @@ print(data)
 # selecting the dataset which starts from 2015
 crime_df=crime_df[crime_df['Year']>=2015]
 # Displaying major_crimes from 2015
-crime_df
+print('Displaying major_crimes from 2015',crime_df)
 
 temp=crime_df.copy()
 temp
@@ -79,24 +79,24 @@ temp
 nrows= temp.shape[0]
 portion=math.floor(nrows/3)
 # Displaying this portion size
-portion
+print('Displaying this portion size',portion)
 
 # First half of the data
 first=temp.iloc[0:portion,:]
 # Displaying the first half shape
-first.shape
+print('Displaying the first half shape',first.shape)
 
 # Second half of the data
 nextp=portion+portion+1
 scnd=temp.iloc[(portion+1):nextp,:]
 # Displaying the second half shape
-scnd.shape
+print('Displaying the second half shape',scnd.shape)
 
 #Third half of the data
 finalp=nextp+portion+1
 third=temp.iloc[(nextp+1):finalp,:]
 # Displaying the third half shape
-third.shape
+print('Displaying the third half shape',third.shape)
 
 # picking random 80k enteries from the first half
 index=np.random.choice(portion,replace=False,size = 80000)
