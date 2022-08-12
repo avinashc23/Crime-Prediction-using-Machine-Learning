@@ -375,6 +375,356 @@ X_train, X_test, y_train, y_test = train_test_split(X , Y , test_size = 0.2, ran
 # 7- Ada Boost
 # 8- Decision Tree Classifier (J48)
 
+from sklearn.metrics import classification_report
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
+import warnings
+warnings.filterwarnings('ignore')
+
+# para=[{"max_iter":[1,10,100,100]}]
+parameters = {
+    'penalty' : ['l1','l2'], 
+    'C'       : np.logspace(-3,3,7),
+    }
+
+
+logreg = LogisticRegression(max_iter=12000,class_weight='balanced')
+clf = GridSearchCV(logreg,                    # model
+                   param_grid = parameters,   # hyperparameters
+                   scoring='accuracy',        # metric for scoring
+                   cv=3)                     # number of 
+
+print("Tuned Hyperparameters :", clf.best_params_)
+print("Accuracy :",clf.best_score_)
+
+# Logistic Regression
+
+from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression(solver="sag",max_iter=12000,class_weight='balanced',penalty = 'l2',C = 1.0)
+lr.fit(X_train, y_train)
+pred_labels = lr.predict(X_test)
+print('--------------------------------------------------------')
+score = lr.score(X_test, y_test)
+print('Accuracy Score: ', score)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_labels))
+# print('Accuracy of Logistic Regression', lr.score(X_test, y_test))
+
+# Naive Bayes
+
+from sklearn.naive_bayes import GaussianNB
+gnb = GaussianNB()
+gnb.fit(X_train,y_train)
+pred_labels = gnb.predict(X_test)
+
+ # Use score method to get accuracy of the model
+print('--------------------------------------------------------')
+score = gnb.score(X_test, y_test)
+print('Accuracy Score: ', score)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_labels))
+# print('Accuracy of Naive Bayes', gnb.score(X_test, y_test))
+
+#  Categoric Naivee Bayes
+
+from sklearn.naive_bayes import CategoricalNB
+cnb = CategoricalNB(min_categories=4)
+cnb.fit(X_train,y_train)
+pred_labels = cnb.predict(X_test)
+print('--------------------------------------------------------')
+score = cnb.score(X_test, y_test)
+print('Accuracy Score: ', score)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_labels))
+# print('Accuracy of Categoric Naive Byaes', cnb.score(X_test, y_test))    
+
+
+error_rate = []
+
+krange = range(1,10,1)
+for i in krange:
+    knn = KNeighborsClassifier(n_neighbors=i, metric='manhattan', weights = 'uniform',n_jobs= -1) 
+    knn.fit(X_train,y_train)
+    predicted_train = knn.predict(X_train)
+    pred_i = knn.predict(X_test)
+    error_rate.append(np.mean(pred_i != y_test))
+    print(' Neighbours  ',i)
+    print('Test accuracy ', metrics.accuracy_score(y_train, predicted_train))
+    print('Accuracy ', metrics.accuracy_score(y_test, pred_i))
+    
+
+# elbow method to check best amount of neighbours
+plt.figure(figsize=(10,6))
+
+plt.plot(krange,error_rate, color= 'blue', linestyle= 'dashed', marker= 'o', markerfacecolor='red', markersize=1)
+plt.title('Error Rate vs. K Value')
+plt.xlabel('K')
+plt.ylabel('Error Rate')
+# by looking at the figure at 1 error is minimum
+# after that at 2 it  increases drastically than show a gradual decrease
+# so we chooose K size 1
+
+
+# KNN
+
+knn = KNeighborsClassifier(n_neighbors = 1,metric='manhattan', weights = 'uniform')
+knn.fit(X_train, y_train)
+pred_train = knn.predict(X_train)
+pred_i = knn.predict(X_test)
+
+ # Use score method to get accuracy of the model
+print('--------------------------------------------------------')
+score = knn.score(X_test, y_test)
+print('Accuracy Score: ', score)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+print('Test accuracy ', metrics.accuracy_score(y_train, pred_train))
+print('Accuracy ', metrics.accuracy_score(y_test, pred_i))
+
+from sklearn.svm import SVC
+svm = SVC(gamma='auto')
+
+# For HyperTuning
+#from sklearn.model_selection import GridSearchCV
+#clf = GridSearchCV( svm ,
+#{
+#    'C': [1,10,20],
+#    'kernel': ['rbf','linear']
+#}, cv=5, return_train_score=False)
+
+#clf.fit(X_train, y_train)
+
+#clf.cv_results_
+
+#dataframe = pd.DataFrame(clf.cv_results_)
+#dataframe
+
+# SVM
+svm = SVC(gamma='auto',kernel='rbf',class_weight='balanced')
+svm.fit(X_train, y_train)
+print('Accuracy of SVM', svm.score(X_test, y_test))
+
+pred_train = svm.predict(X_train)
+pred_i = svm.predict(X_test)
+print('--------------------------------------------------------')
+print(' SVM ')
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+# SVM
+
+#from sklearn.model_selection import cross_val_score
+#score=cross_val_score(svm,X_train, y_train,cv=3)
+#print('Cross Validation: ',score.mean())
+
+# for xgboost
+Y=Y.map({1:0,2:1,3:2,4:3})
+
+## Hyperparameter optimization using RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
+
+## Hyper Parameter Optimization
+
+params={
+ "learning_rate"    : [0.05, 0.10, 0.15, 0.20, 0.25, 0.30 ] ,
+ "max_depth"        : [ 3, 4, 5, 6, 8, 10, 12, 15],
+ "min_child_weight" : [ 1, 3, 5, 7 ],
+ "gamma"            : [ 0.0, 0.1, 0.2 , 0.3, 0.4 ],
+ "colsample_bytree" : [ 0.3, 0.4, 0.5 , 0.7 ]
+    
+}
+
+# Calculate the accuracy
+import xgboost as xgb
+xgb = xgb.XGBClassifier()
+#xgb.set_params(n_estimators=10)
+random_search=RandomizedSearchCV(xgb,param_distributions=params,n_iter=5,scoring='roc_auc',n_jobs=-1,cv=5,verbose=3)
+
+random_search.fit(X_train, y_train)
+# Fit it to the training set
+
+print(random_search.best_estimator_)
+
+random_search.best_params_
+
+xgb=xgb.set_params(base_score=0.5, booster='gbtree', callbacks=None,
+              colsample_bylevel=1, colsample_bynode=1, colsample_bytree=0.5,
+              early_stopping_rounds=None, enable_categorical=False,
+              eval_metric=None, gamma=0.1, gpu_id=-1, grow_policy='depthwise',
+              importance_type=None, interaction_constraints='',
+              learning_rate=0.3, max_bin=256, max_cat_to_onehot=4,
+              max_delta_step=0, max_depth=12, max_leaves=0, min_child_weight=7,
+              monotone_constraints='()', n_estimators=100,
+              n_jobs=0, num_parallel_tree=1, objective='multi:softprob',
+              predictor='auto', random_state=0, reg_alpha=0)
+xgb.fit(X_train, y_train)
+
+# Predict the labels of the test set
+preds = xgb.predict(X_test)
+
+accuracy = float(np.sum(preds==y_test))/y_test.shape[0]
+
+# Print the baseline accuracy
+print("XG Boost accuracy:", accuracy)
+
+pred_train = xgb.predict(X_train)
+pred_i = xgb.predict(X_test)
+print('--------------------------------------------------------')
+print(' Xgb Report ')
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+# print(xgb)
+
+y_train.unique()
+
+# importing random forest classifier from assemble module
+from sklearn.ensemble import RandomForestClassifier
+# creating a RF classifier
+clf = RandomForestClassifier(n_estimators = 300) 
+ 
+# Training the model on the training dataset
+# fit function is used to train the model using the training sets as parameters
+clf.fit(X_train, y_train)
+ 
+# performing predictions on the test dataset
+y_pred = clf.predict(X_test)
+ 
+# metrics are used to find accuracy or error
+from sklearn import metrics 
+print()
+ 
+# using metrics module for accuracy calculation
+print("ACCURACY OF THE MODEL: ", metrics.accuracy_score(y_test, y_pred))
+
+pred_train = clf.predict(X_train)
+pred_i = clf.predict(X_test)
+print('--------------------------------------------------------')
+print(' Random Forest Report ')
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+# Decision Tree Classifier
+
+from sklearn.tree import DecisionTreeClassifier
+tree = DecisionTreeClassifier()
+tree.fit(X_train, y_train)
+y_pred = tree.predict(X_test)
+
+total_datapoints = X_test.shape[0]
+mislabeled_datapoints = (y_test != y_pred).sum()
+correct_datapoints = total_datapoints-mislabeled_datapoints
+percent_correct = (correct_datapoints / total_datapoints) * 100
+
+print("DecisionTreeClassifier results for NSL-KDD:\n")
+print("Total datapoints: %d\nCorrect datapoints: %d\nMislabeled datapoints: %d\nPercent correct: %.2f%%"
+      % (total_datapoints, correct_datapoints, mislabeled_datapoints, percent_correct))
+
+
+print("ACCURACY OF THE Decision Tree Classifier: ", metrics.accuracy_score(y_test, y_pred))
+pred_train = tree.predict(X_train)
+pred_i = tree.predict(X_test)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+# Decision Tree Classifier (J48)
+
+# from sklearn.metrics import accuracy_score
+
+
+# X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size = 0.2, random_state = 1000)
+
+
+# j48 = DecisionTreeClassifier(criterion = "gini",random_state = 1000,max_depth=500, min_samples_leaf=600)
+# j48.fit(X_train, y_train)
+# print(j48)
+             
+# clf_entropy = DecisionTreeClassifier(criterion = "entropy", random_state = 1000,max_depth = 500, min_samples_leaf = 600)
+# clf_entropy.fit(X_train, y_train)
+# print(clf_entropy)
+             
+# y_pred = j48.predict(X_test)
+# # print("Predicted values:")
+# print(y_pred)
+             
+# print("Confusion Matrix: ",confusion_matrix(y_test, y_pred))
+# print ("Accuracy : ",accuracy_score(y_test,y_pred))
+# print("Report : ",classification_report(y_test, y_pred))
+
+
+from sklearn.ensemble import AdaBoostClassifier
+
+
+# Create adaboost classifer object
+adb = AdaBoostClassifier(n_estimators=300,  learning_rate=1)
+# Train Adaboost Classifer
+model = adb.fit(X_train, y_train)
+
+#Predict the response for test dataset
+y_pred = model.predict(X_test)
+
+print("Accuracy OF Ada Boost:",metrics.accuracy_score(y_test, y_pred))
+pred_train = adb.predict(X_train)
+pred_i = adb.predict(X_test)
+print('--------------------------------------------------------')
+print(classification_report(y_test, pred_i))
+
+# Using Cross Validation
+# Models used
+# 1- Logistic Regression
+# 2- Naive Bayes
+# 3- XG Boost
+# 4- Random Forest
+# 5- Knn
+# 6- SVM
+# 7- Ada Boost
+# 8- Decision Tree Classifier (J48)
+
+# XG Boost
+from sklearn.model_selection import cross_val_score
+score=cross_val_score(xgb,X_train, y_train,cv=10)
+score
+print('XG boost Using Cross Validation: ',score.mean())
+
+# Logistic Regression
+score=cross_val_score(lr,X_train, y_train,cv=10)
+score
+print('Logistic Regression boost Using Cross Validation: ',score.mean())
+
+# Naive Bayes
+score=cross_val_score(gnb,X_train, y_train,cv=10)
+score
+print('Naive Bayes Using Cross Validation: ',score.mean())
+
+# KNN
+score=cross_val_score(knn,X_train, y_train,cv=10)
+score
+print('KNN Using Cross Validation: ',score.mean())
+
+# Random Forest
+score=cross_val_score(clf,X_train, y_train,cv=10)
+score
+print('Random Forest Using Cross Validation: ',score.mean())
+
+# SVM
+score=cross_val_score(svm,X_train, y_train,cv=10)
+score
+print('Random Forest Using Cross Validation: ',score.mean())
+
+# Decision Tree Classifier (J48)
+score=cross_val_score(j48,X_train, y_train,cv=10)
+score
+print('J46 Using Cross Validation: ',score.mean())
+
+# Ada Boost
+score=cross_val_score(adb,X_train, y_train,cv=10)
+score
+print('Ada BoostUsing Cross Validation: ',score.mean())
+
+
 
 
 
